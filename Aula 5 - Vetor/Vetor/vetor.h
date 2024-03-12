@@ -1,0 +1,1 @@
+int* criarVetor(int tam);

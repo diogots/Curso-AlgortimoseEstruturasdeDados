@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tad.cpp"
+#include "tad.h"
 using namespace std;
 
 

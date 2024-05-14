@@ -15,3 +15,11 @@ struct pilha{
 
 typedef struct pilha Pilha;
 
+//criação de uma estrutura de fila
+struct fila{
+    Node *inicio;
+    Node *fim;
+};
+
+typedef struct fila Fila;
+

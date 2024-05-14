@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tad.cpp"
+#include "tad.h"
 using namespace std;
 
 /*
@@ -78,7 +78,7 @@ RETORNO: nada
 void destroiPilha(Pilha* pilha){
 	while (!vaziaPilha(pilha))
         pop(pilha);
-    cout << "pilha destrupida com sucesso!" << endl;
+    cout << "pilha destruída com sucesso!" << endl;
 }
 /*
 FUNÇÃO: print

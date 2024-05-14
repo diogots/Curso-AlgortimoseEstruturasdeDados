@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Lista.h"
 #include "Pilha.h"
+#include "Fila.h"
 #include <locale.h>
 
 using namespace std;
@@ -25,6 +26,8 @@ int main(){
     setElementoLista(pElem,101);
     cout << getElementoLista(pElem) << endl;*/
 
+
+/*
     Pilha *p;
 
     p = criaPilha();
@@ -33,7 +36,20 @@ int main(){
     push(p,12);
     push(p,7);
     printPilhaControle(p);
+    pop(p);
+    printPilhaControle(p);
     destroiPilha(p);
+*/
+
+    Fila *f;
+    f = criaFila();
+    enqueue(f,2);
+    enqueue(f,4);
+    enqueue(f,8);
+    enqueue(f,12);
+    dequeue(f);
+    dequeue(f);
+    printFilaControle(f);
 
 }
 

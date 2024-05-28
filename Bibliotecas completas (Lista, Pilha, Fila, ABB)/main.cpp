@@ -56,15 +56,38 @@ int main(){
     ArvBB *arv;
     arv = criaABB();
     cout << "arvore criada" << endl;
-    arv = insereABB(arv, 50);
-    arv = insereABB(arv, 25);
-    arv = insereABB(arv, 75);
-    arv = insereABB(arv, 12);
-    arv = insereABB(arv, 36);
-    arv = insereABB(arv, 60);
-    arv = insereABB(arv, 87);
+    arv = insereABB(arv, 8);
+    arv = insereABB(arv, 3);
     arv = insereABB(arv, 10);
+    arv = insereABB(arv, 1);
+    arv = insereABB(arv, 6);
+    arv = insereABB(arv, 4);
+    arv = insereABB(arv, 7);
+    arv = insereABB(arv, 14);
     arv = insereABB(arv, 13);
+    cout << "Árvore hierárquica:" << endl;
     preOrdemABBHierarquico(arv);
+    cout << endl;
+    cout << "Percurso RED: ";
+    preOrdemABB(arv,printNodeABB);
+    cout << endl;
+        cout << "Percurso ERD: ";
+    emOrdemABB(arv,printNodeABB);
+    cout << endl;
+        cout << "Percurso EDR: ";
+    posOrdemABB(arv,printNodeABB);
+    cout << endl;
+    cout << "\nNumero de elementos: " << getNumElementosABB(arv) << endl;
+    //buscaElemABB(arv,7);
+    //buscaElemABB(arv,25);
+    arv = removeElemABB(arv,3);
+    cout << "Árvore hierárquica:" << endl;
+    preOrdemABBHierarquico(arv);
+    arv = removeElemABB(arv,8);
+    cout << "Árvore hierárquica:" << endl;
+    preOrdemABBHierarquico(arv);
+    cout << endl;
+
+
 }
 

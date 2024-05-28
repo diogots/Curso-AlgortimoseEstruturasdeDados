@@ -17,11 +17,18 @@ int vaziaABB(ArvBB* raiz){
     else return 0;
 }
 
-// Função para imprimir a informação no nó atual
-void printABB(ArvBB *nodeArv){
+// Função para imprimir a informação no nó atual para a impressão em níveis
+void printABBHierarquico(ArvBB *nodeArv){
     // Imprime o valor do campo 'info' do nó
-    cout << " " << nodeArv->info << "\n     ";
+    cout << " " << nodeArv->info << "\n            ";
 }
+
+// Função para imprimir a informação no nó atual
+void printNodeABB(ArvBB *nodeArv){
+    // Imprime o valor do campo 'info' do nó
+    cout << " " << nodeArv->info << " ";
+}
+
 
 // Função para visitar um nó e executar uma função nele
 void visitABB(ArvBB *nodeArv, void (*func)(ArvBB*)){
@@ -31,71 +38,88 @@ void visitABB(ArvBB *nodeArv, void (*func)(ArvBB*)){
 
 
 // Função para realizar uma travessia em pré-ordem da árvore com visualização hierarquica
-void preOrdemABBHierarquico(ArvBB *raiz, int nivel = 0){
+void preOrdemABBHierarquico(ArvBB *raiz, int nivel = 0,int ehRaiz=1){
     // Verifica se a árvore não está vazia
     if (!vaziaABB(raiz)){
         // Visita a raiz e imprime seu valor
-        visitABB(raiz,printABB);
+        if(ehRaiz){
+            cout << "raiz:";
+            ehRaiz = 0; //imprimiu a raiz principal da árvore
+        }
+        visitABB(raiz,printABBHierarquico);
         if(raiz->esq){
                 for(int i = 0; i<nivel; i++)
-                    cout << "     ";
-                cout << "<fe>";
+                    cout << "            ";
+                cout << "<<filhoEsq:";
         }
         // Realiza a travessia em pré-ordem da subárvore esquerda
-        preOrdemABBHierarquico(raiz->esq,nivel+1);
+        preOrdemABBHierarquico(raiz->esq,nivel+1,ehRaiz);
         if(raiz->dir){
                 for(int i = 0; i<nivel; i++)
-                    cout << "     ";
-                cout << "<fd>";
+                    cout << "            ";
+                cout << ">>FilhoDir:";
         }
         // Realiza a travessia em pré-ordem da subárvore direita
-        preOrdemABBHierarquico(raiz->dir,nivel+1);
+        preOrdemABBHierarquico(raiz->dir,nivel+1,ehRaiz);
     }
 }
 
 // Função para realizar uma travessia em pré-ordem da árvore (RED)
-void preOrdemABB(ArvBB *raiz){
+//executa a função recebida como parâmetro em cada nó
+void preOrdemABB(ArvBB *raiz,void (*func)(ArvBB*)){
     // Verifica se a árvore não está vazia
     if (!vaziaABB(raiz)){
         // Visita a raiz e imprime seu valor
-        visitABB(raiz,printABB);
-        cout << "<<";
+        visitABB(raiz,func);
+        //cout << " << ";
         // Realiza a travessia em pré-ordem da subárvore esquerda
-        preOrdemABB(raiz->esq);
-        cout << ">>";
+        preOrdemABB(raiz->esq,func);
+        //cout << " >> ";
         // Realiza a travessia em pré-ordem da subárvore direita
-        preOrdemABB(raiz->dir);
+        preOrdemABB(raiz->dir,func);
     }
 }
 
 // Função para realizar uma travessia em ordem da árvore (ERD)
-void emOrdemABB(ArvBB *raiz){
+void emOrdemABB(ArvBB *raiz,void (*func)(ArvBB*)){
     // Verifica se a árvore não está vazia
     if (!vaziaABB(raiz)){
         // Realiza a travessia em ordem da subárvore esquerda
-        cout << "<<";
-        emOrdemABB(raiz->esq);
+        //cout << " << ";
+        emOrdemABB(raiz->esq,func);
         // Visita a raiz e imprime seu valor
-        visitABB(raiz,printABB);
-        cout << ">>";
+        visitABB(raiz,func);
+        //cout << " >> ";
         // Realiza a travessia em ordem da subárvore direita
-        emOrdemABB(raiz->dir);
+        emOrdemABB(raiz->dir,func);
     }
 }
 
 // Função para realizar uma travessia em pós-ordem da árvore (EDR)
-void posOrdemABB(ArvBB *raiz){
+void posOrdemABB(ArvBB *raiz,void (*func)(ArvBB*)){
     // Verifica se a árvore não está vazia
     if (!vaziaABB(raiz)){
         // Realiza a travessia em pós-ordem da subárvore esquerda
-        cout << "<<";
-        posOrdemABB(raiz->esq);
-        cout << ">>";
+        //cout << " << ";
+        posOrdemABB(raiz->esq,func);
+        //cout << " >> ";
         // Realiza a travessia em pós-ordem da subárvore direita
-        posOrdemABB(raiz->dir);
+        posOrdemABB(raiz->dir,func);
         // Visita a raiz e imprime seu valor
-        visitABB(raiz,printABB);
+        visitABB(raiz,func);
     }
+}
+
+int numElementos=0;
+
+void addElem(ArvBB *node){
+    numElementos++;
+}
+
+int getNumElementosABB(ArvBB *raiz){
+    numElementos = 0;
+    preOrdemABB(raiz,addElem);
+    return numElementos;
 }
 
 // Função para retornar o máximo entre dois inteiros
@@ -150,60 +174,66 @@ ArvBB* insereABB(ArvBB *raiz, int elem){
     return raiz;
 }
 
-// Função para buscar um elemento na ABB
+// Função para buscar um elemento na Árvore Binária de Busca (ABB)
 ArvBB* buscaElemABB(ArvBB *raiz, int elem){
-    // Se a raiz for NULL (ou seja, a árvore está vazia) ou o valor da raiz for igual ao elemento, retorna a raiz
-    if (raiz == NULL || raiz->info == elem)
+    // Verifica se a árvore não está vazia
+    if(!vaziaABB(raiz)){
+        // Se o valor do nó atual é igual ao elemento procurado
+        if (raiz->info == elem){
+            cout << "Elemento " << elem << " encontrado!" << endl;
+            // Retorna o nó que contém o elemento
+            return raiz;
+        }
+        // Se o elemento é menor que o valor do nó atual
+        else if(elem < raiz->info)
+            // Busca o elemento na subárvore esquerda
+            raiz = buscaElemABB(raiz->esq,elem);
+        else
+            // Se o elemento é maior que o valor do nó atual, busca o elemento na subárvore direita
+            buscaElemABB(raiz->dir,elem);
+    }else{ // Se a árvore está vazia, imprime uma mensagem indicando que o elemento não foi encontrado
+        cout << "Elemento " << elem << " não encontrado!" << endl;
         return raiz;
-    else{
-        // Se o elemento for menor que o valor da raiz, busca o elemento na subárvore esquerda
-        if(elem < raiz->info)
-            return buscaElemABB(raiz->esq,elem);
-        // Senão, busca o elemento na subárvore direita
-        else return buscaElemABB(raiz->dir,elem);
     }
 }
 
-// Função para remover um elemento da ABB
+// Função para remover um elemento de uma Árvore Binária de Busca (ABB)
 ArvBB* removeElemABB(ArvBB * raiz, int elem){
-    // Variável auxiliar para armazenar o nó a ser removido
-    ArvBB* aux;
-    // Verifica se a ABB está vazia
-    if (!vaziaABB(raiz)){
-        // Se o elemento for igual ao valor da raiz
-        if (elem == raiz->info){
-            // Se a subárvore direita da raiz for NULL
-            if (raiz->dir == NULL){
-                aux = raiz;
-                raiz = raiz->esq;
-                delete(aux);
-            // Se a subárvore esquerda da raiz for NULL
-            }else if (raiz->esq == NULL){
-                aux = raiz;
+    // Verifica se a árvore está vazia
+    if(!vaziaABB(raiz)){
+        // Se o elemento é menor que o nó atual, procura na subárvore esquerda
+        if(elem < raiz->info){
+            raiz->esq = removeElemABB(raiz->esq,elem);
+        }
+        // Se o elemento é maior que o nó atual, procura na subárvore direita
+        else if (elem > raiz->info){
+            raiz->dir = removeElemABB(raiz->dir,elem);
+        }
+        // Se o elemento é igual ao nó atual, remove o nó
+        else{
+            ArvBB *aux = raiz;
+            // Se o nó atual não tem filho à esquerda, substitui o nó pelo filho à direita
+            if(raiz->esq == NULL){
                 raiz = raiz->dir;
-                delete(aux);
-            // Se a raiz tiver ambos os filhos
-            }else{
+                delete aux;
+            }
+            // Se o nó atual não tem filho à direita, substitui o nó pelo filho à esquerda
+            else if (raiz->dir == NULL){
+                raiz = raiz->esq;
+                delete aux;
+            }
+            // Se o nó atual tem ambos os filhos, substitui o nó pelo menor elemento da subárvore direita
+            else{
                 aux = raiz->dir;
-                // Encontra o menor elemento da subárvore direita
                 while(aux->esq)
                     aux = aux->esq;
-                // Liga com a subárvore esquerda
-                aux->esq = raiz->esq;
-                aux = raiz;
-                raiz = raiz->dir;
-                delete(aux);
+                raiz->info = aux->info;
+                raiz->dir = removeElemABB(raiz->dir,aux->info);
             }
-        // Se o elemento for diferente do valor da raiz
-        }else{
-            // Se o elemento for menor que o valor da raiz
-            if (elem < raiz->info)
-                raiz->esq = removeElemABB(raiz->esq, elem);
-            // Se o elemento for maior que o valor da raiz
-            else raiz->dir = removeElemABB(raiz->dir,elem);
         }
+        // Retorna a raiz da árvore
+        return raiz;
     }
-    // Retorna a raiz da ABB
-    return raiz;
+    // Se a árvore está vazia, retorna NULL
+    else return NULL;
 }
-

@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1774815756 source:c:\users\lenovo\documents\aed projetos\vetor\vetor.cpp
+	<iostream>
+
+1774819676 source:c:\users\lenovo\documents\aed projetos\vetor\main.cpp
+	<iostream>
+	"vetor.h"
+	<locale.h>
+	<ctime>
+	<cstdlib>
+
+1774813666 c:\users\lenovo\documents\aed projetos\vetor\vetor.h
+
